@@ -46,6 +46,44 @@ python -m task_manager.cli
 
 The CLI creates or opens `tasks.db` in the process's current working directory. If you launch the application from another directory, the database file is created or opened there instead.
 
+## Docker
+
+Docker support requires Docker Engine and Docker Compose. Docker Desktop includes both on Windows and macOS; on Linux, install Docker Engine and the Docker Compose plugin.
+
+Build the image from the project directory:
+
+```text
+docker compose build
+```
+
+Run the interactive application with:
+
+```text
+docker compose up
+```
+
+Compose keeps standard input open and allocates a terminal for the CLI. Use the menu to manage tasks, then select option 6 to exit.
+
+The container runs the application from `/data`, where it creates or opens `/data/tasks.db`. Compose mounts the named volume `task_manager_data` at `/data`, so SQLite data persists when the container is stopped, removed, and recreated. The local `tasks.db` is not copied into the Docker image; the container initializes its own database in the volume.
+
+Stop and remove the container while preserving the database volume:
+
+```text
+docker compose down
+```
+
+Rebuild the image and recreate the container:
+
+```text
+docker compose up --build --force-recreate
+```
+
+The existing database will be available after recreation. To stop the container and also delete the named volume and its stored data, run:
+
+```text
+docker compose down -v
+```
+
 ## Tests
 
 Run the complete test suite with:

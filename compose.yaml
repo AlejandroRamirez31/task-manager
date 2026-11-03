@@ -1,0 +1,12 @@
+services:
+  task-manager:
+    build:
+      context: .
+    image: task-manager:local
+    stdin_open: true
+    tty: true
+    volumes:
+      - task_manager_data:/data
+
+volumes:
+  task_manager_data:
